@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>AUREX — Riqueza en Expansión</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#C9952A;--gold-l:#F0C96B;--gold-p:rgba(201,149,42,0.12);
+  --green:#1D9E75;--green-l:#9FE1CB;
+  --bg:#06080a;--card:rgba(255,255,255,0.03);
+  --border:rgba(255,255,255,0.07);--border-g:rgba(201,149,42,0.22);
+  --text:#EEEAE0;--muted:rgba(238,234,224,0.48);--soft:rgba(238,234,224,0.72);
+  --nav-h:64px;
+}
+html,body{height:100%;overflow:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column}
+
+/* ── SPLASH ── */
+#splash{position:fixed;inset:0;background:#06080a;z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px}
+#splash::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,rgba(201,149,42,0.15) 0%,transparent 65%)}
+.splash-logo{font-family:'Syne',sans-serif;font-size:64px;font-weight:800;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:logoIn 1s ease both;position:relative;z-index:1}
+.splash-sub{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--muted);letter-spacing:3px;animation:logoIn 1s .3s ease both;position:relative;z-index:1}
+.splash-bar{width:120px;height:2px;background:var(--border);border-radius:2px;overflow:hidden;position:relative;z-index:1;animation:logoIn 1s .5s ease both}
+.splash-fill{height:100%;background:linear-gradient(to right,var(--gold),var(--gold-l));border-radius:2px;animation:fillBar 1.8s .8s ease forwards;width:0}
+@keyframes fillBar{to{width:100%}}
+@keyframes logoIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+#splash.hide{animation:splashOut .6s ease forwards}
+@keyframes splashOut{to{opacity:0;pointer-events:none}}
+
+/* ── LAYOUT ── */
+#app{display:flex;flex-direction:column;height:100%;opacity:0;transition:opacity .5s ease}
+#app.show{opacity:1}
+
+/* ── TOP BAR ── */
+.topbar{height:56px;background:rgba(6,8,10,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 20px;flex-shrink:0;position:relative;z-index:10}
+.tb-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tb-sub{font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;font-family:'Syne',sans-serif}
+.tb-right{display:flex;align-items:center;gap:12px}
+.tb-badge{background:var(--gold-p);border:1px solid var(--border-g);border-radius:50px;padding:4px 12px;font-size:11px;color:var(--gold-l);font-weight:700;font-family:'Syne',sans-serif}
+
+/* ── CONTENT ── */
+#content{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+#content::-webkit-scrollbar{width:3px}
+#content::-webkit-scrollbar-track{background:transparent}
+#content::-webkit-scrollbar-thumb{background:var(--border-g);border-radius:2px}
+
+/* ── SCREENS ── */
+.screen{display:none;min-height:100%;animation:screenIn .3s ease}
+.screen.active{display:block}
+@keyframes screenIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HOME SCREEN ── */
+.home-hero{position:relative;padding:40px 24px 48px;text-align:center;overflow:hidden}
+.home-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(201,149,42,0.12) 0%,transparent 65%);pointer-events:none}
+.home-hero::after{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(201,149,42,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(201,149,42,0.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none}
+.home-tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-g);border-radius:50px;padding:5px 14px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-l);font-family:'Syne',sans-serif;margin-bottom:20px;position:relative;z-index:1}
+.home-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.home-h1{font-family:'Syne',sans-serif;font-size:clamp(28px,8vw,42px);font-weight:800;line-height:1.1;margin-bottom:12px;position:relative;z-index:1}
+.home-h1 span{background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.home-p{font-size:15px;color:var(--soft);line-height:1.7;max-width:480px;margin:0 auto;position:relative;z-index:1}
+
+/* MODULE CARDS */
+.mods-wrap{padding:0 16px 24px}
+.mods-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:0 4px 14px;display:flex;align-items:center;gap:10px}
+.mods-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--border-g),transparent)}
+.mod-cards{display:flex;flex-direction:column;gap:10px}
+.mod-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;transition:border-color .2s,transform .2s;text-decoration:none}
+.mod-card:hover,.mod-card:active{border-color:var(--border-g);transform:translateX(4px)}
+.mod-card.featured{background:linear-gradient(135deg,rgba(201,149,42,0.08),rgba(29,158,117,0.04));border-color:var(--border-g)}
+.mc-ico{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0}
+.ic-gold{background:rgba(201,149,42,0.12)}
+.ic-green{background:rgba(29,158,117,0.12)}
+.ic-blue{background:rgba(55,138,221,0.12)}
+.ic-purple{background:rgba(127,119,221,0.12)}
+.ic-coral{background:rgba(216,90,48,0.12)}
+.mc-info{flex:1;min-width:0}
+.mc-num{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-family:'Syne',sans-serif;margin-bottom:2px}
+.mc-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:3px;line-height:1.3}
+.mc-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.mc-arr{font-size:16px;color:var(--muted);flex-shrink:0}
+.mc-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:50px;font-family:'Syne',sans-serif}
+.badge-new{background:rgba(29,158,117,0.15);color:var(--green-l);border:1px solid rgba(29,158,117,0.2)}
+.badge-soon{background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid var(--border)}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 16px 20px}
+.sr-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center}
+.sr-n{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--gold-l),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.sr-l{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3}
+
+/* ── MODULE VIEWER ── */
+#mod-viewer{position:fixed;inset:0;background:var(--bg);z-index:500;display:none;flex-direction:column}
+#mod-viewer.open{display:flex}
+.mv-bar{height:52px;background:rgba(6,8,10,0.98);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;padding:0 16px;flex-shrink:0}
+.mv-back{width:36px;height:36px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;color:var(--text);transition:border-color .2s}
+.mv-back:hover{border-color:var(--border-g)}
+.mv-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);flex:1}
+.mv-content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.mv-content iframe{width:100%;height:100%;border:none;background:var(--bg)}
+
+/* ── BOTTOM NAV ── */
+.bottomnav{height:var(--nav-h);background:rgba(6,8,10,0.97);backdrop-filter:blur(16px);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-around;flex-shrink:0;position:relative;z-index:10}
+.bn-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 16px;cursor:pointer;transition:opacity .2s;border:none;background:none;color:var(--muted);flex:1}
+.bn-item.active{color:var(--gold)}
+.bn-ico{font-size:20px;line-height:1}
+.bn-lbl{font-size:10px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;font-family:'Syne',sans-serif}
+.bn-item.active .bn-lbl{color:var(--gold-l)}
+
+/* ── COMUNIDAD SCREEN ── */
+.comm-hero{padding:32px 20px 24px;background:radial-gradient(ellipse at 50% 0%,rgba(29,158,117,0.1) 0%,transparent 60%)}
+.comm-h{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:8px}
+.comm-p{font-size:14px;color:var(--soft);line-height:1.7;margin-bottom:20px}
+.comm-links{display:flex;flex-direction:column;gap:9px;padding:0 20px 24px}
+.cl-item{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;text-decoration:none;transition:border-color .2s,transform .2s}
+.cl-item:hover{border-color:var(--border-g);transform:translateX(4px)}
+.cl-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.cl-wa{background:rgba(37,211,102,0.12)}.cl-tg{background:rgba(41,182,246,0.12)}.cl-lm{background:rgba(127,119,221,0.12)}.cl-sp{background:rgba(201,149,42,0.12)}
+.cl-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px}
+.cl-desc{font-size:12px;color:var(--muted);line-height:1.4}
+.cl-arr{margin-left:auto;font-size:16px;color:var(--muted)}
+
+/* ── PERFIL SCREEN ── */
+.prof-hero{padding:40px 20px 28px;text-align:center;background:radial-gradient(ellipse at 50% 0%,rgba(201,149,42,0.1) 0%,transparent 60%)}
+.prof-av{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:#1a0f00;margin:0 auto 14px}
+.prof-name{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--text);margin-bottom:4px}
+.prof-role{font-size:13px;color:var(--muted)}
+.prof-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 20px 20px}
+.ps-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center}
+.ps-n{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;color:var(--gold-l);display:block}
+.ps-l{font-size:11px;color:var(--muted);margin-top:2px}
+.prof-menu{padding:0 20px 32px;display:flex;flex-direction:column;gap:8px}
+.pm-item{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .2s}
+.pm-item:hover{border-color:var(--border-g)}
+.pm-ico{font-size:18px;width:36px;text-align:center}
+.pm-txt{flex:1;font-size:14px;color:var(--soft);font-weight:500}
+.pm-arr{color:var(--muted);font-size:14px}
+
+/* COMING SOON */
+.coming{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:16px;text-align:center;padding:40px 24px}
+.coming-ico{font-size:56px}
+.coming h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text)}
+.coming p{font-size:14px;color:var(--muted);line-height:1.6;max-width:280px}
+.coming-badge{background:var(--gold-p);border:1px solid var(--border-g);border-radius:50px;padding:6px 16px;font-size:12px;font-weight:700;color:var(--gold-l);font-family:'Syne',sans-serif}
+</style>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-logo">AUREX</div>
+  <div class="splash-sub">riqueza en expansión</div>
+  <div class="splash-bar"><div class="splash-fill"></div></div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div>
+      <div class="tb-logo">AUREX</div>
+      <div class="tb-sub">riqueza en expansión</div>
+    </div>
+    <div class="tb-right">
+      <div class="tb-badge">Beta</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+
+    <!-- HOME -->
+    <div class="screen active" id="s-home">
+      <div class="home-hero">
+        <div class="home-tag">Tu ecosistema digital</div>
+        <h1 class="home-h1">Bienvenido a<br><span>AUREX</span></h1>
+        <p class="home-p">Todo lo que necesitas para desarrollar tu negocio digital, aprender, crecer y generar resultados reales — en un solo lugar.</p>
+      </div>
+
+      <div class="stats-row">
+        <div class="sr-card"><span class="sr-n">6</span><div class="sr-l">Países activos</div></div>
+        <div class="sr-card"><span class="sr-n">7</span><div class="sr-l">Días al primer resultado</div></div>
+        <div class="sr-card"><span class="sr-n">∞</span><div class="sr-l">Sin límite de crecimiento</div></div>
+      </div>
+
+      <div class="mods-wrap">
+        <div class="mods-title">Módulos de formación</div>
+        <div class="mod-cards">
+
+          <div class="mod-card featured" onclick="openMod('mod1','¿Qué es un Negocio Digital?')">
+            <div class="mc-ico ic-gold">🌐</div>
+            <div class="mc-info">
+              <div class="mc-num">Módulo 01 · Fundamentos</div>
+              <div class="mc-title">¿Qué es un Negocio Digital?</div>
+              <div class="mc-desc">Lo que nadie te explicó antes de empezar</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <span class="mc-badge badge-new">Nuevo</span>
+              <span class="mc-arr">›</span>
+            </div>
+          </div>
+
+          <div class="mod-card featured" onclick="openMod('mod2','Bienvenida · Negocios Digitales')">
+            <div class="mc-ico ic-green">🚀</div>
+            <div class="mc-info">
+              <div class="mc-num">Módulo 02 · Inicio</div>
+              <div class="mc-title">Bienvenida al ecosistema AUREX</div>
+              <div class="mc-desc">Tu visión y línea de desarrollo</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <span class="mc-badge badge-new">Nuevo</span>
+              <span class="mc-arr">›</span>
+            </div>
+          </div>
+
+          <div class="mod-card featured" onclick="openMod('mod3','Guía de Inicio · 7 Días')">
+            <div class="mc-ico ic-blue">📅</div>
+            <div class="mc-info">
+              <div class="mc-num">Módulo 03 · Acción</div>
+              <div class="mc-title">Tus primeros resultados en 7 días</div>
+              <div class="mc-desc">Tu ruta paso a paso para el primer cierre</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <span class="mc-badge badge-new">Nuevo</span>
+              <span class="mc-arr">›</span>
+            </div>
+          </div>
+
+          <div class="mod-card" onclick="openMod('mod4','Criptomonedas')">
+            <div class="mc-ico ic-purple">₿</div>
+            <div class="mc-info">
+              <div class="mc-num">Módulo 04 · Cripto</div>
+              <div class="mc-title">Criptomonedas desde cero</div>
+              <div class="mc-desc">Wallets, USDT, TRC20 y más</div>
+            </div>
+            <span class="mc-arr">›</span>
+          </div>
+
+          <div class="mod-card" style="opacity:.6;cursor:default">
+            <div class="mc-ico ic-coral">📈</div>
+            <div class="mc-info">
+              <div class="mc-num">Módulo 05 · Marketing</div>
+              <div class="mc-title">Marketing Digital</div>
+              <div class="mc-desc">Redes, contenido y embudos</div>
+            </div>
+            <span class="mc-badge badge-soon">Pronto</span>
+          </div>
+
+          <div class="mod-card" style="opacity:.6;cursor:default">
+            <div class="mc-ico ic-gold">💹</div>
+            <div class="mc-info">
+              <div class="mc-num">Módulo 06 · Trading</div>
+              <div class="mc-title">Trading y Portafolio</div>
+              <div class="mc-desc">Inversiones y cuentas de fondeo</div>
+            </div>
+            <span class="mc-badge badge-soon">Pronto</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- COMUNIDAD -->
+    <div class="screen" id="s-comunidad">
+      <div class="comm-hero">
+        <div class="mods-title" style="margin:0 0 10px">Tus canales</div>
+        <div class="comm-h">Tu ecosistema<br>de trabajo</div>
+        <div class="comm-p">Únete a cada espacio — son tus herramientas diarias para crecer, aprender y duplicarte.</div>
+      </div>
+      <div class="comm-links">
+        <a class="cl-item" href="https://whatsapp.com/channel/0029VbCJVGF35fLrF45hx31y" target="_blank">
+          <div class="cl-ico cl-wa">💬</div>
+          <div><div class="cl-name">WhatsApp AUREX</div><div class="cl-desc">Información diaria, Zooms y novedades del equipo</div></div>
+          <div class="cl-arr">→</div>
+        </a>
+        <a class="cl-item" href="https://t.me/+qIrOWBBaQxE0MjYx" target="_blank">
+          <div class="cl-ico cl-tg">✈️</div>
+          <div><div class="cl-name">Telegram AUREX</div><div class="cl-desc">Guiones, cierres, objeciones y material listo para copiar</div></div>
+          <div class="cl-arr">→</div>
+        </a>
+        <a class="cl-item" href="https://majesticlime.com/" target="_blank">
+          <div class="cl-ico cl-lm">🌐</div>
+          <div><div class="cl-name">Lime Company</div><div class="cl-desc">Tu backoffice oficial — posicionamiento y ganancias</div></div>
+          <div class="cl-arr">→</div>
+        </a>
+        <a class="cl-item" href="https://apps.apple.com/us/app/spaces-follow-businesses/id1099748482" target="_blank">
+          <div class="cl-ico cl-sp">📱</div>
+          <div><div class="cl-name">App Space — iOS</div><div class="cl-desc">Tutoriales y módulos completos en tu iPhone</div></div>
+          <div class="cl-arr">→</div>
+        </a>
+        <a class="cl-item" href="https://play.google.com/store/apps/details?id=com.wix.android" target="_blank">
+          <div class="cl-ico cl-sp">🤖</div>
+          <div><div class="cl-name">App Space — Android</div><div class="cl-desc">Tutoriales y módulos completos en tu Android</div></div>
+          <div class="cl-arr">→</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- PERFIL -->
+    <div class="screen" id="s-perfil">
+      <div class="prof-hero">
+        <div class="prof-av">A</div>
+        <div class="prof-name">Mi Perfil AUREX</div>
+        <div class="prof-role">Miembro activo · Lime Company</div>
+      </div>
+      <div class="prof-stats">
+        <div class="ps-card"><span class="ps-n">7</span><div class="ps-l">Días activo</div></div>
+        <div class="ps-card"><span class="ps-n">3</span><div class="ps-l">Módulos vistos</div></div>
+        <div class="ps-card"><span class="ps-n">$0</span><div class="ps-l">Generado</div></div>
+      </div>
+      <div class="prof-menu">
+        <div class="pm-item"><div class="pm-ico">🎯</div><div class="pm-txt">Mi plan de 7 días</div><div class="pm-arr">›</div></div>
+        <div class="pm-item"><div class="pm-ico">📊</div><div class="pm-txt">Mi progreso</div><div class="pm-arr">›</div></div>
+        <div class="pm-item"><div class="pm-ico">🔗</div><div class="pm-txt">Mi link de embudo</div><div class="pm-arr">›</div></div>
+        <div class="pm-item"><div class="pm-ico">👥</div><div class="pm-txt">Mi equipo</div><div class="pm-arr">›</div></div>
+        <div class="pm-item"><div class="pm-ico">⚙️</div><div class="pm-txt">Configuración</div><div class="pm-arr">›</div></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- BOTTOM NAV -->
+  <div class="bottomnav">
+    <button class="bn-item active" onclick="showScreen('home',this)">
+      <div class="bn-ico">🏠</div>
+      <div class="bn-lbl">Inicio</div>
+    </button>
+    <button class="bn-item" onclick="showScreen('comunidad',this)">
+      <div class="bn-ico">🔗</div>
+      <div class="bn-lbl">Canales</div>
+    </button>
+    <button class="bn-item" onclick="showScreen('perfil',this)">
+      <div class="bn-ico">👤</div>
+      <div class="bn-lbl">Perfil</div>
+    </button>
+  </div>
+</div>
+
+<!-- MODULE VIEWER -->
+<div id="mod-viewer">
+  <div class="mv-bar">
+    <div class="mv-back" onclick="closeMod()">←</div>
+    <div class="mv-title" id="mv-title">Módulo</div>
+  </div>
+  <div class="mv-content" id="mv-content"></div>
+</div>
+
+<script>
+// Module content URLs — inline for demo
+const modContent = {
+  mod1: 'modulo1-negocio-digital-final.html',
+  mod2: 'bienvenida-negocios-digitales.html',
+  mod3: 'guia-inicio-aurex-v4.html',
+  mod4: null
+};
+
+// Splash
+setTimeout(() => {
+  document.getElementById('splash').classList.add('hide');
+  setTimeout(() => {
+    document.getElementById('splash').style.display = 'none';
+    document.getElementById('app').classList.add('show');
+  }, 600);
+}, 2800);
+
+// Screen navigation
+function showScreen(name, el) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.bn-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('s-' + name).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('content').scrollTop = 0;
+}
+
+// Module viewer
+function openMod(id, title) {
+  const viewer = document.getElementById('mod-viewer');
+  const content = document.getElementById('mv-content');
+  document.getElementById('mv-title').textContent = title;
+
+  if (modContent[id]) {
+    content.innerHTML = '<iframe src="' + modContent[id] + '" title="' + title + '"></iframe>';
+  } else {
+    content.innerHTML = `<div class="coming">
+      <div class="coming-ico">🔒</div>
+      <h3>Módulo en preparación</h3>
+      <p>Este módulo estará disponible muy pronto. Mantente conectado al canal de WhatsApp para saber cuándo se activa.</p>
+      <div class="coming-badge">Próximamente</div>
+    </div>`;
+  }
+  viewer.classList.add('open');
+}
+
+function closeMod() {
+  document.getElementById('mod-viewer').classList.remove('open');
+  document.getElementById('mv-content').innerHTML = '';
+}
+</script>
+</body>
+</html>
