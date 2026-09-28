@@ -182,6 +182,77 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
 .scroll-top{height:.75rem}
 .star-week{font-size:2rem;opacity:.2;transition:all .3s}
 .star-week.earned{opacity:1;filter:drop-shadow(0 0 8px rgba(201,149,42,.8))}
+
+/* =========================================================
+   VERSIÓN PC (solo pantallas de 1024px o más)
+   El diseño de celular de arriba NO se modifica.
+   ========================================================= */
+@media (min-width:1024px){
+  /* LOGIN: pantalla dividida */
+  #login-screen{padding-left:50%;background-image:none}
+  #login-screen::before{content:'';position:absolute;left:0;top:0;bottom:0;width:50%;background:radial-gradient(ellipse 70% 60% at 50% 45%,rgba(201,149,42,.22) 0%,transparent 70%),var(--surface);border-right:1px solid var(--border)}
+  .login-logo{position:absolute;left:25%;top:50%;transform:translate(-50%,-75%);font-size:5rem;margin:0}
+  .login-tagline{position:absolute;left:25%;top:50%;transform:translate(-50%,2.2rem);font-size:.9rem;margin:0;white-space:nowrap}
+  .login-card{max-width:420px}
+
+  /* ESTRUCTURA: menú lateral + contenido */
+  #root{max-width:none}
+  #bottom-nav{top:0;right:auto;width:240px;flex-direction:column;justify-content:flex-start;gap:.35rem;padding:1.5rem 1rem;border-top:none;border-right:1px solid var(--border);background:var(--surface);backdrop-filter:none}
+  #bottom-nav::before{content:'AUREX';font-family:'Syne',sans-serif;font-weight:800;font-size:1.5rem;letter-spacing:.12em;color:var(--gold);padding:0 .75rem 1.5rem}
+  .nav-btn{flex:none;flex-direction:row;justify-content:flex-start;gap:.85rem;padding:.8rem .9rem;border-radius:10px}
+  .nav-btn:hover{background:var(--surface2);color:var(--text)}
+  .nav-btn.active{background:rgba(201,149,42,.12);color:var(--gold)}
+  .nav-btn span{font-size:.85rem;letter-spacing:.02em;text-transform:none}
+  #topbar,#main{margin-left:240px}
+
+  /* ENCABEZADO compacto */
+  #topbar{flex-direction:row;align-items:center;justify-content:flex-start;gap:.9rem;padding:1rem 2rem;border-bottom:1px solid var(--border);text-align:left}
+  .topbar-badge{margin:0}
+  .topbar-welcome{font-size:1.1rem}
+  .topbar-brand{font-size:1.4rem;margin:0}
+  .topbar-sub{display:none}
+  .topbar-avatar{top:50%;transform:translateY(-50%);right:2rem}
+  #avatar-menu{right:2rem!important}
+
+  /* CONTENIDO */
+  #main{padding-bottom:2rem}
+  .tab-pane{max-width:1180px;margin:0 auto;padding:1.25rem 1.5rem 0}
+  .mod-card,.accordion,.lime-card,.canal-item{transition:border-color .2s,transform .2s}
+  .mod-card:hover,.accordion-head:hover,.canal-item:hover{border-color:rgba(201,149,42,.45)}
+  .mod-card:hover{transform:translateY(-2px)}
+  .acc-lesson:hover{background:var(--surface2)}
+
+  /* INICIO: módulos en 2 columnas, academia en cuadrícula 2x2 */
+  #tab-inicio.active{display:grid;grid-template-columns:1fr 1fr;column-gap:1.25rem;row-gap:.9rem;align-items:start}
+  #tab-inicio>*{grid-column:1/-1}
+  #tab-inicio>div[style="height:1.25rem"]{display:none}
+  #tab-inicio>div:has(>.accordion){grid-column:auto}
+  #tab-inicio .accordion{margin:0}
+  .card-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+
+  /* MARKETING y PROSPECTOS: bloque principal a la izquierda, resumen a la derecha */
+  #tab-canales>div[style^="padding:0 1rem"],
+  #tab-prospeccion>div[style^="padding:0 1rem"]{display:grid;grid-template-columns:1.25fr 1fr;grid-template-rows:auto auto auto auto 1fr;column-gap:1.25rem;align-items:start}
+  #tab-canales>div[style^="padding:0 1rem"]>*,
+  #tab-prospeccion>div[style^="padding:0 1rem"]>*{grid-column:1/-1}
+  #tab-canales>div[style^="padding:0 1rem"]>:nth-child(3),
+  #tab-prospeccion>div[style^="padding:0 1rem"]>:nth-child(3){grid-column:1;grid-row:3/6}
+  #tab-canales>div[style^="padding:0 1rem"]>:nth-child(4),
+  #tab-prospeccion>div[style^="padding:0 1rem"]>:nth-child(4){grid-column:2;grid-row:3}
+  #tab-canales>div[style^="padding:0 1rem"]>:nth-child(5),
+  #tab-prospeccion>div[style^="padding:0 1rem"]>:nth-child(5){grid-column:2;grid-row:4}
+
+  /* CRM: tablero horizontal con las 5 etapas */
+  #crm-board{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));align-items:start}
+
+  /* VISOR: panel centrado con fondo oscurecido */
+  #viewer{position:fixed;top:3vh;bottom:3vh;left:50%;width:min(1000px,92vw);transform:translateX(-50%);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 0 0 100vmax rgba(0,0,0,.7)}
+  #viewer-inline>*,#cripto-lesson-view>*{max-width:760px;margin-left:auto;margin-right:auto}
+  #viewer-quiz-bar{border-radius:0 0 16px 16px}
+
+  /* POPUP centrado sobre toda la pantalla */
+  #popup-overlay{position:fixed!important}
+}
 </style>
 </head>
 <body>
@@ -194,15 +265,19 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
   <!-- LOGIN FORM -->
   <div class="login-card" id="form-login">
     <div>
-      <label>Usuario</label>
-      <input type="text" id="login-user" placeholder="tu usuario" autocomplete="username">
+      <label>Correo</label>
+      <input type="email" id="login-user" placeholder="tu@correo.com" autocomplete="email">
     </div>
     <div>
       <label>Contraseña</label>
-      <input type="password" id="login-pass" placeholder="••••••••••" autocomplete="current-password">
+      <div style="position:relative">
+        <input type="password" id="login-pass" placeholder="••••••••••" autocomplete="current-password" style="padding-right:2.6rem">
+        <span onclick="togglePass('login-pass',this)" style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1rem;opacity:.6;user-select:none">👁</span>
+      </div>
     </div>
     <div class="login-error" id="login-error">Usuario o contraseña incorrectos</div>
     <button class="btn-login" onclick="doLogin()">Ingresar →</button>
+    <div style="text-align:center"><span onclick="resetPass()" style="font-size:.75rem;color:var(--gold);cursor:pointer">¿Olvidaste tu contraseña?</span></div>
     <div style="text-align:center;margin-top:.5rem">
       <span onclick="toggleRegister(true)" style="font-size:.78rem;color:var(--muted);cursor:pointer;text-decoration:underline;text-underline-offset:3px">¿Primera vez? Regístrate aquí</span>
     </div>
@@ -226,16 +301,22 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <input type="email" id="reg-email" placeholder="tu@correo.com">
     </div>
     <div>
-      <label>Usuario</label>
-      <input type="text" id="reg-user" placeholder="Elige un usuario">
+      <label>Teléfono (WhatsApp)</label>
+      <input type="tel" id="reg-tel" placeholder="+52 998 123 4567" autocomplete="tel">
     </div>
     <div>
-      <label>Contraseña</label>
-      <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres">
+      <label>Crear contraseña</label>
+      <div style="position:relative">
+        <input type="password" id="reg-pass" placeholder="Mínimo 6 caracteres" autocomplete="new-password" style="padding-right:2.6rem">
+        <span onclick="togglePass('reg-pass',this)" style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1rem;opacity:.6;user-select:none">👁</span>
+      </div>
     </div>
     <div>
-      <label>Código de acceso</label>
-      <input type="text" id="reg-codigo" placeholder="Código de invitación">
+      <label>Confirmar contraseña</label>
+      <div style="position:relative">
+        <input type="password" id="reg-pass2" placeholder="Repite tu contraseña" autocomplete="new-password" style="padding-right:2.6rem">
+        <span onclick="togglePass('reg-pass2',this)" style="position:absolute;right:.75rem;top:50%;transform:translateY(-50%);cursor:pointer;font-size:1rem;opacity:.6;user-select:none">👁</span>
+      </div>
     </div>
     <div class="login-error" id="reg-error">Verifica los datos e intenta de nuevo</div>
     <button class="btn-login" onclick="doRegister()">Crear cuenta →</button>
@@ -264,6 +345,9 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       </div>
       <div onclick="goPerfilSection('progreso')" style="padding:.85rem 1.1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;transition:background .15s" onmouseover="this.style.background='var(--surface2)'" onmouseout="this.style.background='transparent'">
         <span style="font-size:1rem">📊</span><span style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600;color:var(--text)">Mi Progreso</span>
+      </div>
+      <div onclick="doLogout()" style="padding:.85rem 1.1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;border-top:1px solid var(--border)">
+        <span style="font-size:1rem">🚪</span><span style="font-family:'Syne',sans-serif;font-size:.85rem;font-weight:600;color:var(--danger)">Cerrar sesión</span>
       </div>
     </div>
     <div class="topbar-badge">● TU ECOSISTEMA DIGITAL</div>
@@ -653,6 +737,7 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
       <button onclick="closePopup()" style="background:var(--gold);border:none;border-radius:10px;padding:.85rem 2rem;font-family:'Syne',sans-serif;font-weight:700;color:#06080a;cursor:pointer;font-size:.9rem">¡Gracias! 🙌</button>
     </div>
   </div>
+  <div hidden><div id="prog-items"></div><span id="prog-count"></span><span id="prog-pct"></span><div id="prog-fill"></div><span id="greet-name"></span></div>
   <nav id="bottom-nav">
     <button class="nav-btn active" id="nav-inicio" onclick="switchTab('inicio')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -690,6 +775,23 @@ html,body{height:100%;background:var(--bg);color:var(--text);font-family:'DM San
   </div>
 
 </div>
+
+<!-- ===== FIREBASE ===== -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBC0jn5B7Ia6MbNqMjUY50Atghok3DCk6g",
+  authDomain: "orygn-expansion.firebaseapp.com",
+  projectId: "orygn-expansion",
+  storageBucket: "orygn-expansion.firebasestorage.app",
+  messagingSenderId: "1044610602898",
+  appId: "1:1044610602898:web:476f08bd5732b9af9e534b"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth(), db = firebase.firestore();
+</script>
 
 <script>
 const SEARCH_INDEX=[
@@ -1160,82 +1262,53 @@ function toggleRegister(show){
   document.getElementById('reg-error').style.display='none';
 }
 
-function getUsers(){return JSON.parse(LS('aurex_users')||'{"aurexdigital":{"pass":"Riqueza2026","nombre":"Ale"}}');}
-function saveUsers(u){LS('aurex_users',JSON.stringify(u));}
-
-function doRegister(){
-  const nombre=document.getElementById('reg-nombre').value.trim();
-  const apellido=document.getElementById('reg-apellido').value.trim();
-  const email=document.getElementById('reg-email').value.trim();
-  const user=document.getElementById('reg-user').value.trim().toLowerCase();
-  const pass=document.getElementById('reg-pass').value.trim();
-  const codigo=document.getElementById('reg-codigo').value.trim().toLowerCase();
+function togglePass(id,el){
+  const i=document.getElementById(id);
+  const show=i.type==='password';
+  i.type=show?'text':'password';
+  el.style.opacity=show?'1':'.6';
+}
+function authMsg(e){
+  const m={'auth/email-already-in-use':'Ese correo ya está registrado.','auth/invalid-email':'Correo inválido.','auth/weak-password':'Contraseña muy débil (mínimo 6).','auth/invalid-credential':'Correo o contraseña incorrectos.','auth/wrong-password':'Correo o contraseña incorrectos.','auth/user-not-found':'Correo o contraseña incorrectos.','auth/too-many-requests':'Demasiados intentos. Espera unos minutos.'};
+  return m[e.code]||'Ocurrió un error. Intenta de nuevo.';
+}
+async function doRegister(){
+  const v=id=>document.getElementById(id).value.trim();
+  const nombre=v('reg-nombre'),apellido=v('reg-apellido'),email=v('reg-email').toLowerCase(),pass=v('reg-pass'),pass2=v('reg-pass2'),tel=v('reg-tel').replace(/[\s-]/g,'');
   const err=document.getElementById('reg-error');
-
-  if(!nombre||!apellido||!email||!user||!pass||!codigo){
-    err.textContent='Completa todos los campos.';err.style.display='block';return;
-  }
-  if(codigo!=='aurex2026'){
-    err.textContent='Código de acceso incorrecto.';err.style.display='block';return;
-  }
-  if(pass.length<6){
-    err.textContent='La contraseña debe tener mínimo 6 caracteres.';err.style.display='block';return;
-  }
-  const users=getUsers();
-  if(users[user]){
-    err.textContent='Ese usuario ya existe. Elige otro.';err.style.display='block';return;
-  }
-  users[user]={pass,nombre,apellido,email};
-  saveUsers(users);
-  LS('logged','1');
-  LS('pf_nombre',nombre+' '+apellido);
-  LS('pf_email',email);
-  LS('current_user',user);
-  err.style.display='none';
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('root').style.display='flex';
-  initApp();
-}
-
-function doLogin(){
-  const u=document.getElementById('login-user').value.trim().toLowerCase();
-  const p=document.getElementById('login-pass').value.trim();
-  const err=document.getElementById('login-error');
-  const users=getUsers();
-  const match=users[u]&&(users[u].pass===p||p==='Lider2026');
-  if(match){
-    LS('logged','1');
-    LS('current_user',u);
-    if(users[u].nombre)LS('pf_nombre',users[u].nombre+(users[u].apellido?' '+users[u].apellido:''));
-    if(users[u].email)LS('pf_email',users[u].email);
+  const fail=t=>{err.textContent=t;err.style.display='block';};
+  if(!nombre||!apellido||!email||!tel||!pass||!pass2)return fail('Completa todos los campos.');
+  if(!/^\+\d{8,15}$/.test(tel))return fail('Escribe tu teléfono con código de país, ej. +52 998 123 4567');
+  if(pass.length<6)return fail('La contraseña debe tener mínimo 6 caracteres.');
+  if(pass!==pass2)return fail('Las contraseñas no coinciden.');
+  try{
+    LS('pf_nombre',nombre+' '+apellido);LS('pf_email',email);LS('pf_tel',tel);
+    const cred=await auth.createUserWithEmailAndPassword(email,pass);
+    await db.collection('usuarios').doc(cred.user.uid).set({nombre,apellido,email,telefono:tel,rol:'miembro',nivel_lime:0,paquete:'',creado:firebase.firestore.FieldValue.serverTimestamp()});
     err.style.display='none';
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('root').style.display='flex';
-    initApp();
-  }else{err.style.display='block'}
+  }catch(e){fail(authMsg(e));}
 }
+async function doLogin(){
+  const email=document.getElementById('login-user').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pass').value;
+  const err=document.getElementById('login-error');
+  try{await auth.signInWithEmailAndPassword(email,pass);err.style.display='none';}
+  catch(e){err.textContent=authMsg(e);err.style.display='block';}
+}
+async function resetPass(){
+  const email=document.getElementById('login-user').value.trim();
+  const err=document.getElementById('login-error');
+  if(!email){err.textContent='Escribe tu correo arriba y vuelve a tocar el enlace.';err.style.display='block';return;}
+  try{await auth.sendPasswordResetEmail(email);err.style.color='var(--green)';err.textContent='Te enviamos un correo para restablecer tu contraseña.';err.style.display='block';setTimeout(()=>err.style.color='',4000);}
+  catch(e){err.textContent=authMsg(e);err.style.display='block';}
+}
+function doLogout(){['pf_nombre','pf_email','pf_tel'].forEach(k=>localStorage.removeItem(k));document.getElementById('avatar-menu').style.display='none';auth.signOut();}
 document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 
-function doLogout(){LS('logged','0');location.reload()}
-
 function initApp(){
-  // phrase
-  const d=new Date().getDay();
-  const phEl=document.getElementById('phrase-el');
-  phEl.innerHTML='<strong>"</strong> '+PHRASES[d]+' <strong>"</strong>';
-  // profile
-  const n=LS('pf_nombre')||'';
-  if(n){
-    document.getElementById('greet-name').textContent=n.split(' ')[0];
-    document.getElementById('profile-name-display').textContent=n;
-    document.getElementById('top-avatar').textContent=n[0].toUpperCase();
-    document.getElementById('profile-avatar-big').textContent=n[0].toUpperCase();
-  }
-  document.getElementById('pf-nombre').value=LS('pf_nombre')||'';
-  document.getElementById('pf-tel').value=LS('pf_tel')||'';
-  document.getElementById('pf-email').value=LS('pf_email')||'';
+  const n=(LS('pf_nombre')||'').trim();
+  if(n)document.getElementById('top-avatar').textContent=n[0].toUpperCase();
   refreshChecks();
-  renderProgress();
 }
 
 const QUIZZES={
@@ -1756,12 +1829,24 @@ function closeViewer(){
   currentModKey=null;
 }
 
-// Auto login check
-if(LS('logged')==='1'){
-  document.getElementById('login-screen').style.display='none';
-  document.getElementById('root').style.display='flex';
-  initApp();
+// Sesión real con Firebase
+async function handleUser(user){
+  if(user){
+    try{const snap=await db.collection('usuarios').doc(user.uid).get();
+      if(snap.exists){const u=snap.data();LS('pf_nombre',(u.nombre+' '+(u.apellido||'')).trim());LS('pf_email',u.email||'');LS('pf_tel',u.telefono||'');}
+    }catch(e){}
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('root').style.display='flex';
+    initApp();
+  }else{
+    document.getElementById('root').style.display='none';
+    document.getElementById('login-screen').style.display='flex';
+    document.getElementById('form-registro').style.display='none';
+    document.getElementById('form-login').style.display='flex';
+    if(new URLSearchParams(location.search).get('registro')==='1')toggleRegister(true);
+  }
 }
+auth.onAuthStateChanged(handleUser);
 </script>
 </body>
 </html>
